@@ -1,5 +1,6 @@
-package co.djsanabriac.nuvutest.dto;
+package co.djsanabriac.nuvutest.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,13 +49,14 @@ public class User {
     @Getter @Setter private String username;
     @Getter @Setter private String password;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    @Getter @Setter private Set<Role> roles;
 
     //JWT token
     private String token;

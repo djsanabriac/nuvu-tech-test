@@ -1,7 +1,8 @@
 package co.djsanabriac.nuvutest.repository;
 
-import co.djsanabriac.nuvutest.dto.User;
+import co.djsanabriac.nuvutest.model.entity.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
+    User findByUsernameOrEmail(String username, String email);
 }
