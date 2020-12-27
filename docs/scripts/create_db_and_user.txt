@@ -1,0 +1,3 @@
+create database nuvu_test_bd;
+CREATE USER 'nuvu_test_user'@'localhost' IDENTIFIED BY 'NuvuTest!@#';
+GRANT ALL PRIVILEGES ON nuvu_test_bd . * TO 'nuvu_test_user'@'localhost';
