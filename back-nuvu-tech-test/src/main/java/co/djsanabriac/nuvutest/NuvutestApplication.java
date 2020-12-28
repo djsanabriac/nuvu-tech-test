@@ -1,5 +1,6 @@
 package co.djsanabriac.nuvutest;
 
+import co.djsanabriac.nuvutest.filter.JWTAuthorizationFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ public class NuvutestApplication {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
+                    .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .anyRequest().authenticated();
