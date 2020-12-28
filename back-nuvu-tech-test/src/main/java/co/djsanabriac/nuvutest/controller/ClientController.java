@@ -1,9 +1,12 @@
 package co.djsanabriac.nuvutest.controller;
 
+import co.djsanabriac.nuvutest.model.dto.CreateUserRequestDTO;
 import co.djsanabriac.nuvutest.model.dto.GeneralResponse;
+import co.djsanabriac.nuvutest.model.entity.IdType;
 import co.djsanabriac.nuvutest.model.entity.User;
 import co.djsanabriac.nuvutest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,7 @@ public class ClientController {
 
             if( result.isPresent() ){
                 user = result.get();
+                user.setPassword(null);
             }
 
 
@@ -51,8 +55,29 @@ public class ClientController {
     }
 
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createClient(){
-        return ResponseEntity.ok("dummy");
+    public ResponseEntity createClient(@RequestBody(required = true) CreateUserRequestDTO newUser ){
+
+        if( !newUser.isComplete() ){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "missing_arguments").toMap());
+        }
+
+        User user = new User();
+        user.setName(newUser.getName());
+        user.setLast_name(newUser.getLast_name());
+        user.setId_type(new IdType(newUser.getId_type(), null, null));
+        user.setId_number(newUser.getId_number());
+        user.setEmail(newUser.getEmail());
+        user.setPhone_number(newUser.getPhone_number());
+
+        try {
+            User u = userRepository.save(user);
+            return ResponseEntity.ok(new GeneralResponse(true, "client_created", u).toMap());
+        }catch (DataIntegrityViolationException de){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "duplicate_idnumber_or_email", de.getCause().getCause().getMessage()).toMap());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "error_saving", e.getMessage()).toMap());
+        }
+
     }
 
     @PutMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
