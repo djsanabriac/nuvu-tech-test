@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 @ToString
 public class CreateUserRequestDTO {
 
+    @Getter @Setter private Integer id;
     @Getter @Setter private String name;
     @Getter @Setter private String last_name;
     @Getter @Setter private Integer id_type;

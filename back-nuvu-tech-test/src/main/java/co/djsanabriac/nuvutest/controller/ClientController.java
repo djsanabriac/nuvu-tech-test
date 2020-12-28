@@ -81,8 +81,30 @@ public class ClientController {
     }
 
     @PutMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateClient(){
-        return ResponseEntity.ok("dummy");
+    public ResponseEntity updateClient(@RequestBody(required = true) CreateUserRequestDTO updateUser){
+
+        if( updateUser.getId() == null || !updateUser.isComplete() ){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "missing_arguments").toMap());
+        }
+
+        User user = new User();
+        user.setId(updateUser.getId());
+        user.setName(updateUser.getName());
+        user.setLast_name(updateUser.getLast_name());
+        user.setId_type(new IdType(updateUser.getId_type(), null, null));
+        user.setId_number(updateUser.getId_number());
+        user.setEmail(updateUser.getEmail());
+        user.setPhone_number(updateUser.getPhone_number());
+
+        try {
+            User u = userRepository.save(user);
+            return ResponseEntity.ok(new GeneralResponse(true, "client_updated", u).toMap());
+        }catch (DataIntegrityViolationException de){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "duplicate_idnumber_or_email", de.getCause().getCause().getMessage()).toMap());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "error_saving", e.getMessage()).toMap());
+        }
+
     }
 
     @DeleteMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

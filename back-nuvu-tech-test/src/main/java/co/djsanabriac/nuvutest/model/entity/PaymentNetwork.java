@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class PaymentNetwork {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Getter @Setter private Integer id;
 
     @Column
