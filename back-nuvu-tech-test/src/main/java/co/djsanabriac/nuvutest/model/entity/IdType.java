@@ -17,8 +17,7 @@ public class IdType {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "id_type_id")
-    @Getter @Setter private Integer id_type_id;
+    @Getter @Setter private Integer id;
 
     @Column(unique = true)
     @NotEmpty

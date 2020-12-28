@@ -1,6 +1,8 @@
 package co.djsanabriac.nuvutest.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,12 +11,13 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "role_id")
-    @Getter @Setter private Integer role_id;
+    @Getter @Setter private Integer id;
 
     @Column(unique = true)
     @NotEmpty
@@ -28,11 +31,4 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     @Getter @Setter Set<User> users;
 
-    public Role(){};
-
-    public Role(Integer role_id, String roleName, String description){
-        this.role_id = role_id;
-        this.roleName = roleName;
-        this.description = description;
-    };
 }

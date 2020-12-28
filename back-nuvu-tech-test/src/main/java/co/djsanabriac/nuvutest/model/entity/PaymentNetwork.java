@@ -15,8 +15,7 @@ public class PaymentNetwork {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "payment_network_id")
-    @Getter @Setter private Integer payment_network_id;
+    @Getter @Setter private Integer id;
 
     @Column
     @NotNull

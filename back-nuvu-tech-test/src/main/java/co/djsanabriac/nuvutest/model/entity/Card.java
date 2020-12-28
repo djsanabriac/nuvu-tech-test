@@ -16,8 +16,7 @@ public class Card {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "card_id")
-    @Getter @Setter private Integer card_id;
+    @Getter @Setter private Integer id;
 
     @ManyToOne
     @JoinColumn(name="user_id")

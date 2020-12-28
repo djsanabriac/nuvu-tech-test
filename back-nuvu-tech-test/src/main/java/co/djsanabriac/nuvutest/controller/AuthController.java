@@ -54,7 +54,7 @@ public class AuthController {
 
         String token = getJWTToken(user);
         Map<String, Object> toReturn = new HashMap<>();
-        toReturn.put("user_id", user.getUser_id());
+        toReturn.put("user_id", user.getId());
         toReturn.put("token", token);
         return ResponseEntity.ok(new GeneralResponse(true, "login_success", toReturn).toMap());
     }
