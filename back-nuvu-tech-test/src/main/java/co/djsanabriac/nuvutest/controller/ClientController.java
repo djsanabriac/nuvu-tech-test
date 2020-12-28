@@ -10,7 +10,7 @@ public class ClientController {
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getClients(){
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("dummy");
     }
 
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
