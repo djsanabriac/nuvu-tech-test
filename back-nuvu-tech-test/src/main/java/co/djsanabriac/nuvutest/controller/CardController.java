@@ -3,6 +3,7 @@ package co.djsanabriac.nuvutest.controller;
 import co.djsanabriac.nuvutest.model.dto.CreateCardRequestDTO;
 import co.djsanabriac.nuvutest.model.dto.GeneralResponse;
 import co.djsanabriac.nuvutest.model.entity.Card;
+import co.djsanabriac.nuvutest.model.entity.User;
 import co.djsanabriac.nuvutest.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,9 @@ public class CardController {
     @Autowired
     private CardRepository cardRepository;
 
-    @GetMapping(path = {"", "/{card_id}"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getCards(@PathVariable(name = "card_id", required = false) Integer cardId){
+    @GetMapping(path = {""}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCards(@RequestParam(name = "card_id", required = false) Integer cardId,
+                                   @RequestParam(name = "user_id", required = false) Integer userId){
 
         if( cardId != null ){
 
@@ -45,9 +47,21 @@ public class CardController {
 
         List<Card> toReturn = new ArrayList<>();
 
+        if( userId != null ){
+
+            Card card = null;
+            User u = new User();
+            u.setId(userId);
+            toReturn.addAll(cardRepository.findAllByUser(u));
+
+            return ResponseEntity.ok(new GeneralResponse<>(true,
+                    "success", toReturn).toMap());
+
+        }
+
         toReturn.addAll((Collection<? extends Card>) cardRepository.findAll());
 
-        return ResponseEntity.ok(new GeneralResponse(true,
+        return ResponseEntity.ok(new GeneralResponse<>(true,
                 "success", toReturn).toMap());
     }
 
