@@ -37,11 +37,13 @@ public class ClientController {
             User user = null;
             Optional<User> result = userRepository.findById(userId);
 
-            if( result.isPresent() ){
-                user = result.get();
-                user.setPassword(null);
+            if( !result.isPresent() ){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GeneralResponse<>(result.isPresent(),
+                        "card_not_found"));
             }
 
+            user = result.get();
+            user.setPassword(null);
 
             return ResponseEntity.ok(new GeneralResponse<>(result.isPresent(),
                     "success", user).toMap());
