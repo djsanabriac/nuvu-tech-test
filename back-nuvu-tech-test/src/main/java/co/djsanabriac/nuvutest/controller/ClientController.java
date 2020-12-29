@@ -7,6 +7,7 @@ import co.djsanabriac.nuvutest.model.entity.User;
 import co.djsanabriac.nuvutest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,12 +63,7 @@ public class ClientController {
         }
 
         User user = new User();
-        user.setName(newUser.getName());
-        user.setLast_name(newUser.getLast_name());
-        user.setId_type(new IdType(newUser.getId_type(), null, null));
-        user.setId_number(newUser.getId_number());
-        user.setEmail(newUser.getEmail());
-        user.setPhone_number(newUser.getPhone_number());
+        user.fromRequest(newUser);
 
         try {
             User u = userRepository.save(user);
@@ -89,12 +85,7 @@ public class ClientController {
 
         User user = new User();
         user.setId(updateUser.getId());
-        user.setName(updateUser.getName());
-        user.setLast_name(updateUser.getLast_name());
-        user.setId_type(new IdType(updateUser.getId_type(), null, null));
-        user.setId_number(updateUser.getId_number());
-        user.setEmail(updateUser.getEmail());
-        user.setPhone_number(updateUser.getPhone_number());
+        user.fromRequest(updateUser);
 
         try {
             User u = userRepository.save(user);
@@ -108,8 +99,9 @@ public class ClientController {
     }
 
     @DeleteMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteClient(){
-        return ResponseEntity.ok("dummy");
+    public ResponseEntity deleteClient(){
+        //TODO Implement method
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Unsoported method");
     }
 
 }

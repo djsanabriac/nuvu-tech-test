@@ -1,5 +1,6 @@
 package co.djsanabriac.nuvutest.model.entity;
 
+import co.djsanabriac.nuvutest.model.dto.CreateUserRequestDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -65,4 +66,20 @@ public class User {
         }
         roles.add(role);
     }
+
+    /**
+     * Allows to map info from request to a User object
+     *
+     * @param u
+     */
+    public void fromRequest(CreateUserRequestDTO u){
+        this.setName(u.getName());
+        this.setLast_name(u.getLast_name());
+        this.setId_type(new IdType(u.getId_type(), null, null));
+        this.setId_number(u.getId_number());
+        this.setEmail(u.getEmail());
+        this.setPhone_number(u.getPhone_number());
+    }
+    
+    
 }
