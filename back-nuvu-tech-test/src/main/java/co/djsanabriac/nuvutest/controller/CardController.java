@@ -97,20 +97,13 @@ public class CardController {
         }
 
         Card toSave = new Card();
-        toSave.setId(newCard.getId());
-        toSave.setUser(u.get());
-        toSave.setCard_number(newCard.getCardNumber());
-        toSave.setExpiration_date(newCard.getExpirationDate());
-        toSave.setCvv(newCard.getCvv());
-        toSave.setCard_holder_name(newCard.getCardHolderName());
-        toSave.setPayment_network(pn.get());
-        toSave.setState(newCard.getState());
+        toSave.fronRequest(newCard, u.get(), pn.get());
 
         try {
             Card c = cardRepository.save(toSave);
             return ResponseEntity.ok(new GeneralResponse(true, "card_created", c).toMap());
         }catch (DataIntegrityViolationException de){
-            return ResponseEntity.badRequest().body(new GeneralResponse(false, "duplicate_idnumber_or_email", de.getCause().getCause().getMessage()).toMap());
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "duplicate_information", de.getCause().getCause().getMessage()).toMap());
         }catch (ConstraintViolationException ce){
             return ResponseEntity.badRequest().body(new GeneralResponse(false, "constraint_violation", ce.getCause().getCause().getMessage()).toMap());
         }catch (Exception e){
@@ -121,7 +114,38 @@ public class CardController {
 
     @PutMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateCard(@RequestBody(required = true) CreateCardRequestDTO newCard){
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not implemented");
+
+        if( newCard.getId() == null || !newCard.isComplete() ){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "missing_or_wrong__arguments").toMap());
+        }
+
+        Optional<User> u = userRepository.findById(newCard.getUserId());
+
+        if( !u.isPresent() ){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GeneralResponse<>(false,
+                    "user_not_found"));
+        }
+
+        Optional<PaymentNetwork> pn = paymentNetworkRepository.findById(newCard.getPaymentNetworkId());
+
+        if( !pn.isPresent() ){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GeneralResponse<>(false,
+                    "payment_network_not_found"));
+        }
+
+        Card toSave = new Card();
+        toSave.fronRequest(newCard, u.get(), pn.get());
+
+        try {
+            Card c = cardRepository.save(toSave);
+            return ResponseEntity.ok(new GeneralResponse(true, "card_updated", c).toMap());
+        }catch (DataIntegrityViolationException de){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "duplicate_information", de.getCause().getCause().getMessage()).toMap());
+        }catch (ConstraintViolationException ce){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "constraint_violation", ce.getCause().getCause().getMessage()).toMap());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new GeneralResponse(false, "error_saving", e.getMessage()).toMap());
+        }
     }
 
     @DeleteMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
