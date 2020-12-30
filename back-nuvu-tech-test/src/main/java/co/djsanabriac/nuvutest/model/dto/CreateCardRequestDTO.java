@@ -29,7 +29,7 @@ public class CreateCardRequestDTO {
                 || cvv == null
                 || StringUtils.isBlank(cardHolderName)
                 || paymentNetworkId == null || paymentNetworkId < 1
-                || "A".equals(state) || "I".equals(state)
+                || !("A".equals(state) || "I".equals(state))
             ){
             return false;
         }
