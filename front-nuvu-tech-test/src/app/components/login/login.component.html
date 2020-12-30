@@ -1,0 +1,21 @@
+<div class="text-center main-style">
+
+  <main class="form-signin">
+    <form [formGroup]="loginForm">
+      <img src="../../../assets/cards-logo.png" width="72" height="72"/>
+      <div style="height: 25px" ></div>
+      <label for="username" class="visually-hidden">Email address</label>
+      <input id="username" formControlName="username" class="form-control" placeholder="Email address" required autofocus>
+      <label for="password" class="visually-hidden">Password</label>
+      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Password" required>
+      <div style="height: 25px" ></div>
+      <div class="alert alert-danger" role="alert" *ngIf="showError">
+        {{errorMessage}}
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="login()">Ingresar</button>
+      <p class="mt-5 mb-3 text-muted">&copy;JDSC 2020</p>
+    </form>
+  </main>
+
+
+</div>

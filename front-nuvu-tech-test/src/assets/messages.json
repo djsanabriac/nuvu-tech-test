@@ -1,0 +1,5 @@
+{
+  "login": {
+    "incorrect_user_or_password": "Usuario o contraseña incorrectos"
+  }
+}
