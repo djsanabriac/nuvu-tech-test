@@ -25,4 +25,8 @@ export class SessionService {
     sessionStorage.clear();
   }
 
+  getItem(prop: string): any{
+    return sessionStorage.getItem(prop);
+  }
+
 }

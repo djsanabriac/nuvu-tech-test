@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 
     this.showError = false;
 
-    const loginRequest: LoginRequest= this.loginForm.value;
+    const loginRequest: LoginRequest = this.loginForm.value;
 
     this._dataSource
       .getAuthenticationRequest(loginRequest)

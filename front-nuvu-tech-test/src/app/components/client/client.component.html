@@ -1,28 +1,21 @@
-
-<div class="alert alert-danger" role="alert" *ngIf="showError">
-  {{errorMessage}}
-</div>
-
 <div class="container fadeIn fast">
-  <h1 class="mt-5">Clientes</h1>
-  <p class="lead">A continuación puede encontrar una lista de clientes registrdos en el sistema.</p>
+  <h1 class="mt-5">{{ client.name }} {{ client.last_name }}</h1>
+  <p class="lead">{{ client.id_type.abbreviation + ' ' + client.id_number }}</p>
+  <p class="lead">{{ client.email }} | {{ client.phone_number }}</p>
 
-
+  <h2>Tarjetas ( {{ cards.length }} ) </h2>
   <button class="btn btn-success" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModal">Crear</button>
   <div style="height: 25px"></div>
-  <div class="list-group">
 
-    <a *ngFor="let c of clientList " class="list-group-item list-group-item-action" aria-current="true" (click)="goToClient(c.id)">
+    <a *ngFor="let c of cards " class="list-group-item list-group-item-action" aria-current="true">
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ c.name }} {{ c.last_name }}</h5>
-        <p class="mb-1">{{ c.email }} | {{ c.phone_number }}</p>
+        <h5 class="mb-1">{{ c.card_number }} {{ c.payment_network.name }}</h5>
       </div>
-      <p class="mb-1">{{ c.id_type.abbreviation + ' ' + c.id_number }}</p>
+      <p class="mb-1">{{c.card_holder_name }}  | Expira:  {{ c.expiration_date | date: 'MM/yy' }}</p>
+      <p class="mb-1">{{ c.state == 'A' ? 'Activa' : 'Inactiva' }} | CVV: {{ c.cvv }}</p>
     </a>
 
-  </div>
-
-
+  <div class="list-group"></div>
 </div>
 
 <!-- Modal -->
@@ -40,7 +33,7 @@
         {{sucessModalMessage}}
       </div>
       <div class="modal-body">
-        <form [formGroup]="userForm" ngNativeValidate>
+        <form [formGroup]="cardForm" ngNativeValidate>
 
           <label for="name" class="visually-hidden">Nombre(s)</label>
           <input id="name" formControlName="name" class="form-control" placeholder="Nombre(s)" required >
@@ -51,10 +44,10 @@
           <div style="height: 25px" ></div>
 
 
-          <label for="id_type" class="visually-hidden">Tipo de documento</label>
+          <!--<label for="id_type" class="visually-hidden">Tipo de documento</label>
           <select id="id_type" class="form-select" formControlName="id_type" aria-label="Tipo de documento" required>
             <option *ngFor="let idt of idTypes " [ngValue]="idt"> ( {{ idt.abbreviation }} ) {{ idt.description }} </option>
-          </select>
+          </select>-->
           <div style="height: 25px" ></div>
 
           <label for="id_number" class="visually-hidden">Número de documento</label>
@@ -68,8 +61,8 @@
           <div style="height: 25px" ></div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-secondary" (click)="cleanForm()">Limpiar</button>
-            <button type="submit" class="btn btn-success" (click)="createUser()" [disabled]="!userForm.valid">Crear</button>
+            <button type="button" class="btn btn-secondary" >Limpiar</button>
+            <button type="submit" class="btn btn-success"  [disabled]="!cardForm.valid">Crear</button>
           </div>
         </form>
       </div>

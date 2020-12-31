@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {HttpClientModule} from '@angular/common/http';
 import { HeaderComponent } from './shared/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import { ClientComponent } from './components/client/client.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HomeComponent } from './components/home/home.component';
     ClientsComponent,
     CardsComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    ClientComponent
   ],
   imports: [
     BrowserModule,

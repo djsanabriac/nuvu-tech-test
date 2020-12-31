@@ -4,6 +4,7 @@ import co.djsanabriac.nuvutest.model.dto.CreateUserRequestDTO;
 import co.djsanabriac.nuvutest.model.dto.GeneralResponse;
 import co.djsanabriac.nuvutest.model.entity.IdType;
 import co.djsanabriac.nuvutest.model.entity.User;
+import co.djsanabriac.nuvutest.repository.IdTypeRepository;
 import co.djsanabriac.nuvutest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,9 @@ public class ClientController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private IdTypeRepository idTypeRepository;
 
     /**
      * Returns users with no username & password if {user_id} is null. Otherwise, returns the user of the user_id
@@ -106,4 +111,13 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Unsoported method");
     }
 
+    @GetMapping( path = "/id_types", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getIdTypes(){
+
+        List<IdType> toReturn = new ArrayList<>();
+
+        toReturn.addAll((Collection<? extends IdType>) idTypeRepository.findAll());
+
+        return ResponseEntity.ok(new GeneralResponse(true, "success", toReturn).toMap());
+    }
 }

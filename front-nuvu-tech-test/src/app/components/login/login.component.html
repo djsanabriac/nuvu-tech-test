@@ -1,13 +1,13 @@
-<div class="text-center main-style">
+<div class="text-center main-style fadeIn animated">
 
   <main class="form-signin">
     <form [formGroup]="loginForm">
       <img src="../../../assets/cards-logo.png" width="72" height="72"/>
       <div style="height: 25px" ></div>
-      <label for="username" class="visually-hidden">Email address</label>
-      <input id="username" formControlName="username" class="form-control" placeholder="Email address" required autofocus>
-      <label for="password" class="visually-hidden">Password</label>
-      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Password" required>
+      <label for="username" class="visually-hidden">Username</label>
+      <input id="username" formControlName="username" class="form-control" placeholder="Username" required autofocus>
+      <label for="password" class="visually-hidden">Contraseña</label>
+      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Contraseña" required>
       <div style="height: 25px" ></div>
       <div class="alert alert-danger" role="alert" *ngIf="showError">
         {{errorMessage}}
