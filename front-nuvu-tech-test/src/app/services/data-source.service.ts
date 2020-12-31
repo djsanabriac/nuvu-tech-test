@@ -7,6 +7,8 @@ import {catchError} from 'rxjs/operators';
 import {SessionService} from './session.service';
 import {Client} from '../model/client';
 import {CreateClientRequest} from '../model/create-client-request';
+import {CreateCardRequest} from '../model/create-card-request';
+import {Router} from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -25,7 +27,8 @@ export class DataSourceService {
 
   constructor(
     private httpClient: HttpClient,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private _router: Router
   ) { }
 
   handleError(error: HttpErrorResponse) {
@@ -44,7 +47,9 @@ export class DataSourceService {
         code: error.status,
         message: error.message
       };
+
     }
+
     return throwError(errorMessage);
   }
 
@@ -100,6 +105,13 @@ export class DataSourceService {
     this.verifyAuthorization();
     return this.httpClient
       .get(this.cardsURL + '?user_id=' + userId, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  public getCreateCardRequest(newCard: CreateCardRequest): any {
+    this.verifyAuthorization();
+    return this.httpClient
+      .post(this.cardsURL, newCard, httpOptions)
       .pipe(catchError(this.handleError));
   }
 

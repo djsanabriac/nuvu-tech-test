@@ -3,7 +3,7 @@
   <p class="lead">{{ client.id_type.abbreviation + ' ' + client.id_number }}</p>
   <p class="lead">{{ client.email }} | {{ client.phone_number }}</p>
 
-  <h2>Tarjetas ( {{ cards.length }} ) </h2>
+  <h2>Tarjetas ( {{ (cards ? cards.length : 0) }} ) </h2>
   <button class="btn btn-success" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModal">Crear</button>
   <div style="height: 25px"></div>
 
@@ -23,7 +23,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Crear usuario</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Crear tarjeta</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="showSuccess=false; showModalError= false"></button>
       </div>
       <div class="alert alert-danger" role="alert" *ngIf="showModalError">
@@ -35,36 +35,68 @@
       <div class="modal-body">
         <form [formGroup]="cardForm" ngNativeValidate>
 
-          <label for="name" class="visually-hidden">Nombre(s)</label>
-          <input id="name" formControlName="name" class="form-control" placeholder="Nombre(s)" required >
 
-          <div style="height: 25px" ></div>
-          <label for="last_name" class="visually-hidden">Apellidos</label>
-          <input id="last_name" formControlName="last_name" class="form-control" placeholder="Apellidos" required >
-          <div style="height: 25px" ></div>
-
-
-          <!--<label for="id_type" class="visually-hidden">Tipo de documento</label>
-          <select id="id_type" class="form-select" formControlName="id_type" aria-label="Tipo de documento" required>
-            <option *ngFor="let idt of idTypes " [ngValue]="idt"> ( {{ idt.abbreviation }} ) {{ idt.description }} </option>
-          </select>-->
+          <div class="form-group">
+            <label for="card_holder_name" class="visually-hidden">Nombre</label>
+            <input id="card_holder_name" formControlName="card_holder_name" class="form-control" placeholder="Nombre" required >
+          </div>
           <div style="height: 25px" ></div>
 
-          <label for="id_number" class="visually-hidden">Número de documento</label>
-          <input id="id_number" formControlName="id_number" class="form-control" placeholder="Número de documento" required >
-          <div style="height: 25px" ></div>
-          <label for="email" class="visually-hidden">Dirección de correo</label>
-          <input id="email" formControlName="email" class="form-control" placeholder="Dirección de correo" required >
-          <div style="height: 25px" ></div>
-          <label for="phone_number" class="visually-hidden">Número de teléfono/celular</label>
-          <input id="phone_number" formControlName="phone_number" class="form-control" placeholder="Número de teléfono/celular" required >
+          <div class="form-group">
+            <label for="card_number" class="visually-hidden">Número tarjeta</label>
+            <input id="card_number" appNumbersOnly formControlName="card_number" class="form-control" placeholder="Número tarjeta" required maxlength="16" minlength="16">
+          </div>
+          <div style="height: 5px" ></div>
+
+          <div class="row" >
+            <div class="form-group col">
+              <div style="height: 24px" ></div>
+              <label for="cvv" class="visually-hidden">Número de documento</label>
+              <input id="cvv" formControlName="cvv" appNumbersOnly class="form-control " placeholder="CVV" required maxlength="3" minlength="3">
+            </div>
+            <div class="form-group col">
+              <label for="exp_month" class="">Expira:</label>
+              <select id="exp_month" class="form-select" formControlName="exp_month" aria-label="Mes" required>
+                <option value="01" selected="selected">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div class="form-group col">
+              <div style="height: 24px"></div>
+              <label for="exp_year" class="visually-hidden">Año</label>
+              <select id="exp_year" formControlName="exp_year" class="form-control " aria-label="Año" required >
+                <option value="2021" selected="selected">2021</option>
+                <option value="2022" >2022</option>
+                <option value="2023" >2023</option>
+                <option value="2024" >2024</option>
+                <option value="2025" >2025</option>
+                <option value="2026" >2026</option>
+                <option value="2027" >2027</option>
+                <option value="2028" >2028</option>
+                <option value="2029" >2029</option>
+                <option value="2030" >2030</option>
+              </select>
+            </div>
+          </div>
+
           <div style="height: 25px" ></div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             <button type="button" class="btn btn-secondary" >Limpiar</button>
-            <button type="submit" class="btn btn-success"  [disabled]="!cardForm.valid">Crear</button>
+            <button type="submit" class="btn btn-success"  [disabled]="!cardForm.valid" (click)="createCard()">Crear</button>
           </div>
         </form>
+
       </div>
     </div>
   </div>

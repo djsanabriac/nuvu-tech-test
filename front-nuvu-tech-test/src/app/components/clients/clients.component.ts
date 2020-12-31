@@ -6,6 +6,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {IdType} from '../../model/id-type';
 import {CreateClientRequest} from '../../model/create-client-request';
 import {Router} from '@angular/router';
+import {SessionService} from '../../services/session.service';
 
 @Component({
   selector: 'app-clients',
@@ -27,7 +28,8 @@ export class ClientsComponent implements OnInit {
   constructor(
     private _dataSource: DataSourceService,
     private fb: FormBuilder,
-    private _router: Router
+    private _router: Router,
+    private sessionService: SessionService
   ) {
 
     this.userForm = this.fb.group({
@@ -77,7 +79,12 @@ export class ClientsComponent implements OnInit {
         },
         (err: any) => {
           this.showError = false;
-          this.errorMessage = err.error.message;
+          this.errorMessage = err.message;
+          console.log(err);
+          if ( err.code === 403 ){
+            this.sessionService.logout();
+            this._router.navigate(['']);
+          }
         }
       );
   }
@@ -121,6 +128,7 @@ export class ClientsComponent implements OnInit {
         (err: any) => {
           this.showModalError = true;
           this.errorModalMessage = err.error.message;
+          console.log(err);
         }
       );
 

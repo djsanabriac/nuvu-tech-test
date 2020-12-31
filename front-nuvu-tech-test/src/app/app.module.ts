@@ -11,6 +11,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { HeaderComponent } from './shared/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { ClientComponent } from './components/client/client.component';
+import {OnlynumberDirective} from './_helpers/only-number.directive';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ClientComponent } from './components/client/client.component';
     CardsComponent,
     HeaderComponent,
     HomeComponent,
-    ClientComponent
+    ClientComponent,
+    OnlynumberDirective
   ],
   imports: [
     BrowserModule,
